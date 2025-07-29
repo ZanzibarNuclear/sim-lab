@@ -138,7 +138,11 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-# Pytest cache
+# Python generated files
 .pytest_cache
 sim-svc/__pycache__/
 .venv/
+
+
+# Rust generated files
+**/target
