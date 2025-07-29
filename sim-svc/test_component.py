@@ -1,11 +1,11 @@
 from io import StringIO
 import sys
-from component import Node, show_tree
+from component import Node, init_tree
 
 
 class TestNode:
     def test_node_construction_no_children(self):
-        node = Node(1, "test_node", "leaf", [])
+        node = Node("test_node", "leaf", [])
 
         assert node.id == 1
         assert node.name == "test_node"
@@ -13,9 +13,9 @@ class TestNode:
         assert node.children == []
 
     def test_node_construction_with_children(self):
-        child1 = Node(2, "child1", "child", [])
-        child2 = Node(3, "child2", "child", [])
-        parent = Node(1, "parent", "parent", [child1, child2])
+        child1 = Node("child1", "child", [])
+        child2 = Node("child2", "child", [])
+        parent = Node("parent", "parent", [child1, child2])
 
         assert parent.id == 1
         assert parent.name == "parent"
@@ -25,16 +25,16 @@ class TestNode:
         assert parent.children[1] == child2
 
     def test_node_construction_nested_children(self):
-        grandchild = Node(4, "grandchild", "leaf", [])
-        child = Node(3, "child", "branch", [grandchild])
-        parent = Node(1, "parent", "root", [child])
+        grandchild = Node("grandchild", "leaf", [])
+        child = Node("child", "branch", [grandchild])
+        parent = Node("parent", "root", [child])
 
         assert parent.children[0].children[0] == grandchild
         assert parent.children[0].children[0].name == "grandchild"
 
     def test_add_child(self):
-        parent = Node(1, "parent", "parent", [])
-        child = Node(2, "child", "child", [])
+        parent = Node("parent", "parent", [])
+        child = Node("child", "child", [])
 
         parent.add_child(child)
 
@@ -48,19 +48,19 @@ class TestShowTree:
         Node.next_id = 1
 
     def test_show_tree_single_node(self, capsys):
-        node = Node(0, "root", "root", [])
+        node = Node("root", "root", [])
 
-        show_tree(node)
+        init_tree(node)
 
         captured = capsys.readouterr()
         assert "root (root : 1)" in captured.out
 
     def test_show_tree_with_children(self, capsys):
-        child1 = Node(0, "child1", "leaf", [])
-        child2 = Node(0, "child2", "leaf", [])
-        parent = Node(0, "parent", "root", [child1, child2])
+        child1 = Node("child1", "leaf", [])
+        child2 = Node("child2", "leaf", [])
+        parent = Node("parent", "root", [child1, child2])
 
-        show_tree(parent)
+        init_tree(parent)
 
         captured = capsys.readouterr()
         lines = captured.out.strip().split('\n')
@@ -69,11 +69,11 @@ class TestShowTree:
         assert "  child2 (leaf : 3)" in lines[2]
 
     def test_show_tree_nested_children(self, capsys):
-        grandchild = Node(0, "grandchild", "leaf", [])
-        child = Node(0, "child", "branch", [grandchild])
-        parent = Node(0, "parent", "root", [child])
+        grandchild = Node("grandchild", "leaf", [])
+        child = Node("child", "branch", [grandchild])
+        parent = Node("parent", "root", [child])
 
-        show_tree(parent)
+        init_tree(parent)
 
         captured = capsys.readouterr()
         lines = captured.out.strip().split('\n')
@@ -83,13 +83,13 @@ class TestShowTree:
 
     def test_show_tree_assigns_sequential_ids(self, capsys):
         nodes = [
-            Node(0, "node1", "type1", []),
-            Node(0, "node2", "type2", []),
-            Node(0, "node3", "type3", [])
+            Node("node1", "type1", []),
+            Node("node2", "type2", []),
+            Node("node3", "type3", [])
         ]
-        root = Node(0, "root", "root", nodes)
+        root = Node("root", "root", nodes)
 
-        show_tree(root)
+        init_tree(root)
 
         captured = capsys.readouterr()
         lines = captured.out.strip().split('\n')
