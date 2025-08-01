@@ -1,33 +1,33 @@
+mod components;
+mod simulation;
+mod monitoring;
+
+use components::{Turbine, Generator, Reservoir, WaterFlow};
+use simulation::PowerPlantSimulator;
+use monitoring::MonitoringSystem;
+
 fn main() {
-    let my_part = gen_part(String::from("blargy_pants"));
-    let id = Identity(
-        37,
-        String::from("my_blargy_pants"),
-        String::from("abc123qwerty999"),
+    println!("🌊 Hydro Power Plant Simulator Starting...");
+    
+    // Initialize power plant components
+    let turbine = Turbine::new("Main Turbine", 100.0, 0.85);
+    let generator = Generator::new("Main Generator", 95.0, 0.92);
+    let reservoir = Reservoir::new("Upper Reservoir", 1000.0, 800.0);
+    let water_flow = WaterFlow::new(50.0, 0.1);
+    
+    // Create monitoring system
+    let monitoring = MonitoringSystem::new();
+    
+    // Initialize simulator
+    let mut simulator = PowerPlantSimulator::new(
+        turbine,
+        generator,
+        reservoir,
+        water_flow,
+        monitoring,
     );
-
-    let another_part = Part { id: 43, ..my_part };
-
-    println!(
-        "{} ({}) sn: {}",
-        another_part.name, another_part.id, another_part.serial_number
-    );
-    println!("{}", id.0);
-    println!("{}", id.1);
-    println!("{}", id.2);
+    
+    // Run simulation
+    println!("\n🚀 Starting simulation...");
+    simulator.run_simulation(10); // Run for 10 time steps
 }
-
-fn gen_part(name: String) -> Part {
-    Part {
-        id: 42,
-        serial_number: String::from("abc123qwerty999"),
-        name,
-    }
-}
-struct Part {
-    id: u32,
-    serial_number: String,
-    name: String,
-}
-
-struct Identity(u32, String, String);
