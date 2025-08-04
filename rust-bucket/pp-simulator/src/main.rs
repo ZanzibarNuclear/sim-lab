@@ -12,7 +12,7 @@ fn main() {
     // Initialize power plant components
     let turbine = Turbine::new("Main Turbine", 100.0, 0.85);
     let generator = Generator::new("Main Generator", 95.0, 0.92);
-    let reservoir = Reservoir::new("Upper Reservoir", 1000.0, 800.0);
+    let reservoir = Reservoir::new("Upper Reservoir", 100_000_000.0, 90_000_000.0);
     let water_flow = WaterFlow::new(50.0, 0.1);
     
     // Create monitoring system

@@ -3,7 +3,48 @@
 mod blargy;
 
 fn main() {
-    string_theory();
+    let ans1 = find_median(&[1, 2, 3]);
+    let ans2 = find_median(&[2, 3, 4, 4, 5, 6, 6, 6, 7, 8, 9, 10]);
+
+    println!("answers: {} {}", ans1, ans2);
+}
+
+/*
+Practice exercises:
+
+1. Given a list of integers, use a vector and return the median (when sorted, the value in the middle position) and mode (the value that occurs most often; a hash map will be helpful here) of the list.
+
+2. Convert strings to pig latin. The first consonant of each word is moved to the end of the word and ay is added, so first becomes irst-fay. Words that start with a vowel have hay added to the end instead (apple becomes apple-hay). Keep in mind the details about UTF-8 encoding!
+
+3. Using a hash map and vectors, create a text interface to allow a user to add employee names to a department in a company; for example, “Add Sally to Engineering” or “Add Amir to Sales.” Then let the user retrieve a list of all people in a department or all people in the company by department, sorted alphabetically.
+*/
+
+fn find_median(values: &[i32]) -> i32 {
+    let mut sorted: Vec<i32> = Vec::new();
+    sorted.copy_from_slice(&values);
+    sorted.sort();
+    let how_many = sorted.len();
+    let mid = how_many / 2;
+    if how_many % 2 == 0 {
+        (sorted.get(mid).unwrap() + sorted.get(mid - 1).unwrap()) / 2
+    } else {
+        sorted.get(mid).unwrap() / 1
+    }
+}
+
+fn hashery() {
+    use std::collections::HashMap;
+
+    let text = "hello world wonderful wonderful world hello hello am i right";
+
+    let mut map = HashMap::new();
+
+    for word in text.split_whitespace() {
+        let count = map.entry(word).or_insert(0);
+        *count += 1;
+    }
+
+    println!("{map:?}");
 }
 
 #[derive(Debug)]
