@@ -1,12 +1,49 @@
 #![allow(unused)]
 
 mod blargy;
+mod vector_stuff;
+
+use crate::blargy::BlargyStuff;
+use crate::vector_stuff::find_median;
+use core::panic;
+use std::fs::File;
+use std::io::ErrorKind;
 
 fn main() {
-    let ans1 = find_median(&[1, 2, 3]);
-    let ans2 = find_median(&[2, 3, 4, 4, 5, 6, 6, 6, 7, 8, 9, 10]);
+    // open_my_favorite_file();
+
+    // let shrek = BlargyStuff::new("Shrek");
+    // println!("{}", shrek.read_at(0));
+    // println!("{}", shrek.read_at(1));
+    // println!("{}", shrek.read_at(2));
+
+    let case1 = vec![3, 2, 3];
+    let case2 = vec![2, 3, 8, 7, 5, 6, 1, 1, 11, 4, 5, 0];
+
+    let ans1 = find_median(&case1);
+    let ans2 = find_median(&case2);
 
     println!("answers: {} {}", ans1, ans2);
+}
+
+fn open_my_favorite_file() {
+    let fav_file_result = File::open("blargy.txt");
+
+    let fav_file = match fav_file_result {
+        Ok(file) => file,
+        Err(error) => match error.kind() {
+            ErrorKind::NotFound => match File::create("blargy.txt") {
+                Ok(fc) => fc,
+                Err(e) => panic!("at the disco {e:?}"),
+            },
+            ErrorKind::PermissionDenied => {
+                panic!("Oh no! Your favorite file is untouchable! Ahhhh!!!!!")
+            }
+            _ => {
+                panic!("What the what...?");
+            }
+        },
+    };
 }
 
 /*
@@ -18,19 +55,6 @@ Practice exercises:
 
 3. Using a hash map and vectors, create a text interface to allow a user to add employee names to a department in a company; for example, “Add Sally to Engineering” or “Add Amir to Sales.” Then let the user retrieve a list of all people in a department or all people in the company by department, sorted alphabetically.
 */
-
-fn find_median(values: &[i32]) -> i32 {
-    let mut sorted: Vec<i32> = Vec::new();
-    sorted.copy_from_slice(&values);
-    sorted.sort();
-    let how_many = sorted.len();
-    let mid = how_many / 2;
-    if how_many % 2 == 0 {
-        (sorted.get(mid).unwrap() + sorted.get(mid - 1).unwrap()) / 2
-    } else {
-        sorted.get(mid).unwrap() / 1
-    }
-}
 
 fn hashery() {
     use std::collections::HashMap;

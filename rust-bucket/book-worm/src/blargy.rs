@@ -21,4 +21,13 @@ impl BlargyStuff {
             println!("Bow down to me if you want to live.")
         }
     }
+
+    pub fn read_at(&self, index: usize) -> i32 {
+        let v = vec![1, 2, 3];
+        v[index]
+    }
+
+    pub fn panic(&self) {
+        panic!("Oh no!")
+    }
 }
