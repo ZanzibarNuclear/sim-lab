@@ -92,7 +92,34 @@ impl PigConverter {
     }
 }
 
+pub fn to_pig_latin(expression: &str) -> String {
+    expression
+        .split_whitespace()
+        .map(|word| {
+            let (core, suffix, punctuation) = if word.ends_with(|c: char| c.is_ascii_punctuation()) {
+                let core_word = &word[..word.len() - 1];
+                let punc = &word[word.len() - 1..];
+                if "aeiouAEIOU".contains(&core_word[..1]) {
+                    (core_word, "-hay".to_string(), punc)
+                } else {
+                    (&core_word[1..], format!("-{}ay", &core_word[..1].to_lowercase()), punc)
+                }
+            } else {
+                if "aeiouAEIOU".contains(&word[..1]) {
+                    (word, "-hay".to_string(), "")
+                } else {
+                    (&word[1..], format!("-{}ay", &word[..1]), "")
+                }
+            };
+            format!("{}{}{}", core, suffix, punctuation)
+        })
+        .collect::<Vec<String>>()
+        .join(" ")
+}
+
 pub fn en_to_pl(expression: &str) -> String {
+    print!("{expression}");
+
     // split expression into words
     let words = expression.split_whitespace().collect::<Vec<&str>>();
     println!("Words: {:?}", words);
@@ -128,7 +155,5 @@ pub fn en_to_pl(expression: &str) -> String {
         buffer.push_str(" ");
         // reattach punctuation as needed
     }
-    println!("Translation: {buffer}");
-
-    String::from("Hello, pig. ==> ello-Hey, ip-pay.")
+    buffer
 }

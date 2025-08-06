@@ -4,7 +4,7 @@ mod blargy;
 mod vector_stuff;
 
 use crate::blargy::BlargyStuff;
-use crate::vector_stuff::{find_median, find_mode};
+use crate::vector_stuff::{find_median, find_mode, to_pig_latin};
 use core::panic;
 use std::fs::File;
 use std::io::ErrorKind;
@@ -13,11 +13,20 @@ fn main() {
     let sample1 = vector_stuff::en_to_pl("Eat a tasty hamburger. Yum!");
     println!("{}", sample1);
 
+    let sample1b = vector_stuff::to_pig_latin("Eat a tasty hamburger. Yum!");
+    println!("{}", sample1b);
+
     let sample2 = vector_stuff::en_to_pl("This is my second sample. We have to handle consonent blends, too, right?");
+    println!("{}", sample2);
+
+    let sample2b = vector_stuff::to_pig_latin("This is my second sample. We have to handle consonent blends, too, right?");
     println!("{}", sample2);
 
     let sample3 = vector_stuff::en_to_pl("Hello, pig. Aren't you a cutie?");
     println!("{}", sample3);
+
+    let sample3b = vector_stuff::to_pig_latin("Hello, pig. Aren't you a cutie?");
+    println!("{}", sample3b);
 
     // open_my_favorite_file();
 
