@@ -4,7 +4,7 @@ mod blargy;
 mod vector_stuff;
 
 use crate::blargy::BlargyStuff;
-use crate::vector_stuff::find_median;
+use crate::vector_stuff::{find_median, find_mode};
 use core::panic;
 use std::fs::File;
 use std::io::ErrorKind;
@@ -18,10 +18,13 @@ fn main() {
     // println!("{}", shrek.read_at(2));
 
     let case1 = vec![3, 2, 3];
-    let case2 = vec![2, 3, 8, 7, 5, 6, 1, 1, 11, 4, 5, 0];
+    let case2 = vec![2, 3, 8, 7, 5, 6, 1, 7, 1, 11, 7, 4, 5, 0];
 
     let ans1 = find_median(&case1);
     let ans2 = find_median(&case2);
+
+    let mode1 = find_mode(&case1);
+    let mode2 = find_mode(&case2);
 
     println!("answers: {} {}", ans1, ans2);
 }
@@ -49,7 +52,9 @@ fn open_my_favorite_file() {
 /*
 Practice exercises:
 
-1. Given a list of integers, use a vector and return the median (when sorted, the value in the middle position) and mode (the value that occurs most often; a hash map will be helpful here) of the list.
+1. Given a list of integers, use a vector and return the median (when sorted, the value in the middle position)
+
+and mode (the value that occurs most often; a hash map will be helpful here) of the list.
 
 2. Convert strings to pig latin. The first consonant of each word is moved to the end of the word and ay is added, so first becomes irst-fay. Words that start with a vowel have hay added to the end instead (apple becomes apple-hay). Keep in mind the details about UTF-8 encoding!
 
