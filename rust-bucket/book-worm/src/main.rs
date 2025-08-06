@@ -10,6 +10,15 @@ use std::fs::File;
 use std::io::ErrorKind;
 
 fn main() {
+    let sample1 = vector_stuff::en_to_pl("Eat a tasty hamburger. Yum!");
+    println!("{}", sample1);
+
+    let sample2 = vector_stuff::en_to_pl("This is my second sample. We have to handle consonent blends, too, right?");
+    println!("{}", sample2);
+
+    let sample3 = vector_stuff::en_to_pl("Hello, pig. Aren't you a cutie?");
+    println!("{}", sample3);
+
     // open_my_favorite_file();
 
     // let shrek = BlargyStuff::new("Shrek");
@@ -17,16 +26,16 @@ fn main() {
     // println!("{}", shrek.read_at(1));
     // println!("{}", shrek.read_at(2));
 
-    let case1 = vec![3, 2, 3];
-    let case2 = vec![2, 3, 8, 7, 5, 6, 1, 7, 1, 11, 7, 4, 5, 0];
+    // let case1 = vec![3, 2, 3];
+    // let case2 = vec![2, 3, 8, 7, 5, 6, 1, 7, 1, 11, 7, 4, 5, 0];
 
-    let ans1 = find_median(&case1);
-    let ans2 = find_median(&case2);
+    // let ans1 = find_median(&case1);
+    // let ans2 = find_median(&case2);
 
-    let mode1 = find_mode(&case1);
-    let mode2 = find_mode(&case2);
+    // let mode1 = find_mode(&case1);
+    // let mode2 = find_mode(&case2);
 
-    println!("answers: {} {}", ans1, ans2);
+    // println!("answers: {} {}", ans1, ans2);
 }
 
 fn open_my_favorite_file() {

@@ -36,7 +36,8 @@ pub fn find_mode(values: &Vec<i32>) {
 
     println!("A la mode: {histogram:?}");
 
-    let mode: Vec<i32> = histogram.iter()
+    let mode: Vec<i32> = histogram
+        .iter()
         .filter(|&(_k, &v)| v == high_water)
         .map(|(&k, _v)| k)
         .collect();
@@ -60,4 +61,74 @@ fn ai_find_mode() {
     // Print results
     println!("Filtered entries: {:?}", filtered_entries);
     println!("Filtered keys: {:?}", filtered_keys);
+}
+
+struct PigConverter {
+    word: String,
+    // start_punc: String,
+    // end_punc: String,
+}
+
+impl PigConverter {
+    pub fn new(word: &str) -> PigConverter {
+        if word.is_empty() {
+            panic!("I cannot deal with words that have no letters.")
+        }
+
+        // let mut index = 0;
+        // let starts_at = loop {
+        //     if &word.len() <= index + 1 {
+        //         break index;
+        //     }
+        //     let next_char = &word[index..(index + 1)];
+        // }
+        //     if next_char == {
+        //     }
+        // }
+
+        PigConverter {
+            word: word.to_string(),
+        }
+    }
+}
+
+pub fn en_to_pl(expression: &str) -> String {
+    // split expression into words
+    let words = expression.split_whitespace().collect::<Vec<&str>>();
+    println!("Words: {:?}", words);
+
+    // do something about punctuation
+    let mut buffer = String::from("");
+    for word in words {
+        // hold on to punctuation, use slice that excludes
+
+        if word.ends_with('.') || word.ends_with(',') || word.ends_with('!') || word.ends_with('?')
+        {
+            let found_punc = true;
+            let the_punc = &word[(word.len() - 1)..];
+        }
+
+        // check for starting with vowel
+        if word.starts_with('a')
+            || word.starts_with('e')
+            || word.starts_with('i')
+            || word.starts_with('o')
+            || word.starts_with('u')
+        {
+            // append word + "hay" to output
+            buffer.push_str(word);
+            buffer.push_str("-hay");
+        } else {
+            // otherwise, take first character ('c') - append the rest + 'c' + "ay"
+            buffer.push_str(&word[1..]);
+            buffer.push_str("-");
+            buffer.push_str(&word[..1]);
+            buffer.push_str("ay");
+        }
+        buffer.push_str(" ");
+        // reattach punctuation as needed
+    }
+    println!("Translation: {buffer}");
+
+    String::from("Hello, pig. ==> ello-Hey, ip-pay.")
 }
