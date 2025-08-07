@@ -1,40 +1,43 @@
 #![allow(unused)]
 
 mod blargy;
+mod generics;
+mod lifetimes;
+mod traits;
 mod vector_stuff;
 
 use crate::blargy::BlargyStuff;
+use crate::traits::SocialPost;
 use crate::vector_stuff::{find_median, find_mode, to_pig_latin};
 use core::panic;
+use lifetimes::lifetime;
 use std::fs::File;
 use std::io::ErrorKind;
+use traits::{NewsArticle, Summary, notify};
 
 fn main() {
-    let sample1 = vector_stuff::en_to_pl("Eat a tasty hamburger. Yum!");
-    println!("{}", sample1);
+    lifetime();
+}
 
-    let sample1b = vector_stuff::to_pig_latin("Eat a tasty hamburger. Yum!");
-    println!("{}", sample1b);
+fn play_with_traits() {
+    let news = NewsArticle {
+        headline: String::from("Wow"),
+        location: String::from("San Jose"),
+        author: String::from("Bubba"),
+        content: String::from("Dave found a great job. Or more like it found him."),
+    };
+    notify(&news);
 
-    let sample2 = vector_stuff::en_to_pl("This is my second sample. We have to handle consonent blends, too, right?");
-    println!("{}", sample2);
+    let post = SocialPost {
+        username: String::from("BubbaBubbaGump"),
+        content: String::from("Hey there, good people. Let's make some money!!!"),
+        reply: false,
+        repost: false,
+    };
+    notify(&post);
+}
 
-    let sample2b = vector_stuff::to_pig_latin("This is my second sample. We have to handle consonent blends, too, right?");
-    println!("{}", sample2);
-
-    let sample3 = vector_stuff::en_to_pl("Hello, pig. Aren't you a cutie?");
-    println!("{}", sample3);
-
-    let sample3b = vector_stuff::to_pig_latin("Hello, pig. Aren't you a cutie?");
-    println!("{}", sample3b);
-
-    // open_my_favorite_file();
-
-    // let shrek = BlargyStuff::new("Shrek");
-    // println!("{}", shrek.read_at(0));
-    // println!("{}", shrek.read_at(1));
-    // println!("{}", shrek.read_at(2));
-
+fn try_median_mode() {
     // let case1 = vec![3, 2, 3];
     // let case2 = vec![2, 3, 8, 7, 5, 6, 1, 7, 1, 11, 7, 4, 5, 0];
 
@@ -45,6 +48,30 @@ fn main() {
     // let mode2 = find_mode(&case2);
 
     // println!("answers: {} {}", ans1, ans2);
+}
+
+fn try_pig_latin() {
+    let sample1 = vector_stuff::en_to_pl("Eat a tasty hamburger. Yum!");
+    println!("{}", sample1);
+
+    let sample1b = vector_stuff::to_pig_latin("Eat a tasty hamburger. Yum!");
+    println!("{}", sample1b);
+
+    let sample2 = vector_stuff::en_to_pl(
+        "This is my second sample. We have to handle consonent blends, too, right?",
+    );
+    println!("{}", sample2);
+
+    let sample2b = vector_stuff::to_pig_latin(
+        "This is my second sample. We have to handle consonent blends, too, right?",
+    );
+    println!("{}", sample2);
+
+    let sample3 = vector_stuff::en_to_pl("Hello, pig. Aren't you a cutie?");
+    println!("{}", sample3);
+
+    let sample3b = vector_stuff::to_pig_latin("Hello, pig. Aren't you a cutie?");
+    println!("{}", sample3b);
 }
 
 fn open_my_favorite_file() {
@@ -70,13 +97,17 @@ fn open_my_favorite_file() {
 /*
 Practice exercises:
 
-1. Given a list of integers, use a vector and return the median (when sorted, the value in the middle position)
+1. Given a list of integers, use a vector and return the median (when sorted, the value in the middle position) and mode (the value that occurs most often; a hash map will be helpful here) of the list.
 
-and mode (the value that occurs most often; a hash map will be helpful here) of the list.
+DONE
 
 2. Convert strings to pig latin. The first consonant of each word is moved to the end of the word and ay is added, so first becomes irst-fay. Words that start with a vowel have hay added to the end instead (apple becomes apple-hay). Keep in mind the details about UTF-8 encoding!
 
+PARTIAL - Used AI to finish; does not deal well with capitalization, punctuation.
+
 3. Using a hash map and vectors, create a text interface to allow a user to add employee names to a department in a company; for example, “Add Sally to Engineering” or “Add Amir to Sales.” Then let the user retrieve a list of all people in a department or all people in the company by department, sorted alphabetically.
+
+NEXT
 */
 
 fn hashery() {
