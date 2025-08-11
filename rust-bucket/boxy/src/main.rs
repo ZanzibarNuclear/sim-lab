@@ -1,39 +1,24 @@
 #[derive(Debug)]
-pub trait Messenger {
-    fn send(&self, msg: &str);
+enum List {
+    Cons(Rc<RefCell<i32>>, Rc<List>),
+    Nil,
 }
 
-pub struct LimitTracker<'a, T: Messenger> {
-    messenger: &'a T,
-    value: usize,
-    max: usize,
-}
+use crate::List::{Cons, Nil};
+use std::cell::RefCell;
+use std::rc::Rc;
 
-impl<'a, T> LimitTracker<'a, T>
-where
-    T: Messenger,
-{
-    pub fn new(messenger: &'a T, max: usize) -> LimitTracker<'a, T> {
-        LimitTracker {
-            messenger,
-            value: 0,
-            max,
-        }
-    }
+fn main() {
+    let value = Rc::new(RefCell::new(5));
 
-    pub fn set_value(&mut self, value: usize) {
-        self.value = value;
+    let a = Rc::new(Cons(Rc::clone(&value), Rc::new(Nil)));
 
-        let percentage_of_max = self.value as f64 / self.max as f64;
+    let b = Cons(Rc::new(RefCell::new(3)), Rc::clone(&a));
+    let c = Cons(Rc::new(RefCell::new(4)), Rc::clone(&a));
 
-        if percentage_of_max >= 1.0 {
-            self.messenger.send("Error: You are over your quota!");
-        } else if percentage_of_max >= 0.9 {
-            self.messenger
-                .send("Urgent warning: You've used up over 90% of your quota!");
-        } else if percentage_of_max >= 0.75 {
-            self.messenger
-                .send("Warning: You've used up over 75% of your quota.");
-        }
-    }
+    *value.borrow_mut() += 10;
+
+    println!("a after = {a:?}");
+    println!("b after = {b:?}");
+    println!("c after = {c:?}");
 }
