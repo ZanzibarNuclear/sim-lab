@@ -1,60 +1,41 @@
-use std::{pin::pin, time::Duration};
-use trpl::{ReceiverStream, Stream, StreamExt};
+use scraper::{Button, Draw, Screen};
+
+struct SelectBox {
+    width: u32,
+    height: u32,
+    options: Vec<String>,
+}
+
+impl Draw for SelectBox {
+    fn draw(&self) {
+        println!(
+            "Oo, oo, pick from me!! I am {} pix wide and {} pix tall. Choose one: {}",
+            self.width,
+            self.height,
+            self.options.join(", ")
+        );
+    }
+}
 
 fn main() {
-    trpl::run(async {
-        let messages = get_messages().timeout(Duration::from_millis(200));
-        let intervals = get_intervals()
-            .map(|count| format!("Interval: {count}"))
-            .throttle(Duration::from_millis(100))
-            .timeout(Duration::from_secs(10));
-        let merged = messages.merge(intervals).take(40);
-        let mut stream = pin!(merged);
+    let screen = Screen {
+        components: vec![
+            Box::new(SelectBox {
+                width: 75,
+                height: 10,
+                options: vec![
+                    String::from("Yes"),
+                    String::from("Maybe"),
+                    String::from("No"),
+                ],
+            }),
+            Box::new(Button {
+                width: 50,
+                height: 10,
+                label: String::from("OK"),
+            }),
+        ],
+    };
 
-        while let Some(result) = stream.next().await {
-            match result {
-                Ok(message) => println!("{message}"),
-                Err(reason) => eprintln!("Problem: {reason:?}"),
-            }
-        }
-    });
-}
-
-fn get_messages() -> impl Stream<Item = String> {
-    let (tx, rx) = trpl::channel();
-
-    trpl::spawn_task(async move {
-        let messages = ["あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ"];
-
-        for (index, message) in messages.into_iter().enumerate() {
-            let time_to_sleep = if index % 2 == 0 { 100 } else { 300 };
-            trpl::sleep(Duration::from_millis(time_to_sleep)).await;
-
-            if let Err(send_error) = tx.send(format!("Message: '{message}'")) {
-                eprintln!("Cannot send message '{message}': {send_error}");
-                break;
-            }
-        }
-    });
-
-    ReceiverStream::new(rx)
-}
-
-fn get_intervals() -> impl Stream<Item = u32> {
-    let (tx, rx) = trpl::channel();
-
-    trpl::spawn_task(async move {
-        let mut count = 0;
-        loop {
-            trpl::sleep(Duration::from_millis(1)).await;
-            count += 1;
-
-            if let Err(send_error) = tx.send(count) {
-                eprintln!("Could not send interval {count}: {send_error}");
-                break;
-            };
-        }
-    });
-
-    ReceiverStream::new(rx)
+    screen.run();
 }
