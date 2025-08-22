@@ -142,3 +142,6 @@ vite.config.ts.timestamp-*
 .pytest_cache
 sim-svc/__pycache__/
 .venv/
+
+# Rust
+target/
